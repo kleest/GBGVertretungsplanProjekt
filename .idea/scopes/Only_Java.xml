@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Only Java" pattern="src:de.stkl.gbgvertretungsplan..*&amp;&amp;!file[GBG Private]:*/&amp;&amp;!file:build//*&amp;&amp;!file:*.properties" />
+</component>

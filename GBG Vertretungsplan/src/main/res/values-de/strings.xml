@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ####### MAIN ACTIVITY ####### -->
+    <string name="app_name">GBG Vertretungsplan</string>
+    <string name="title_sec_main">Vertretungsplan</string>
+    <string name="title_sec_options">Einstellungen</string>
+    <string name="title_sec_about">Über</string>
+    <string name="navigation_drawer_open">Navigationsleiste öffnen</string>
+    <string name="navigation_drawer_close">Navigationsleiste schließen</string>
+
+    <string name="account_type">de.stkl.gbgvertretungsplan.Account</string>
+    <string name="content_authority">de.stkl.gbgvertretungsplan.provider</string>
+
+    <string name="error_only_one_account_allowed">Nur ein Konto ist erlaubt!</string>
+
+
+    <string name="action_refresh">Neuladen</string>
+    <string name="action_legend">Legende</string>
+
+    <string name="status_updated">Aktualisiert!</string>
+    <string name="status_error">Ein Fehler ist aufgetreten!</string>
+    <string name="status_nodata">Keine Einträge!</string>
+
+    <string name="no_guarantee">Ohne Gewähr</string>
+
+    <!-- spinner -->
+    <string name="action_spinner_mainview_today">Heute</string>
+    <string name="action_spinner_mainview_tomorrow">Morgen</string>
+
+    <!-- legend dialog -->
+    <string name="legend_elimination">Entfall</string>
+    <string name="legend_substitution">Vertretung</string>
+    <string name="legend_room_substitution">Raum-Vertretung</string>
+    <string name="legend_class_change">Unterricht geändert/Verlegung/Betreuung</string>
+    <string name="legend_howto_detail">INFO: Auf einen Eintrag tippen, um Details anzuzeigen</string>
+
+    <!-- account creation dialog -->
+    <string name="acccreation_notice">Bevor %1$s verwendet werden kann, muss ein Konto erstellt werden.</string>
+    <string name="acccreation_ok">Los geht\'s!</string>
+
+    <!-- popup (html) dialog -->
+    <string name="popup_ok">OK</string>
+
+    <!-- about fragment -->
+    <string-array name="about_item_titles">
+        <item>%1$s v%2$s</item>  <!-- %app_name% v%versionString% -->
+        <item>Lizenz &amp; Nutzungshinweise</item>
+        <item>Open-Source-Lizenzen</item>
+    </string-array>
+
+    <string-array name="about_item_summaries">
+        <item>Copyright © 2014 Steffen Klee</item>
+        <item />
+        <item>Verwendete Open-Source-Bibliotheken und deren Lizenzen</item>
+    </string-array>
+
+    <!-- placeholder fragment -->
+    <string name="fragment_placeholder_nocontent">folgt bald..</string>
+
+
+
+    <!-- ####### AUTHENTICATOR ACTIVITY ####### -->
+    <string name="title_activity_authenticator">Konto erstellen</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_username">Benutzername</string>
+    <string name="prompt_password">Passwort</string>
+
+    <string name="action_sign_in">Anmelden</string>
+
+    <string name="login_progress_signing_in">Anmelden&#8230;</string>
+
+    <string name="error_invalid_password">Das Passwort ist zu kurz</string>
+    <string name="error_incorrect_password">Das Passwort ist ungültig</string>
+    <string name="error_field_required">Dieses Feld muss ausgefüllt sein</string>
+
+</resources>

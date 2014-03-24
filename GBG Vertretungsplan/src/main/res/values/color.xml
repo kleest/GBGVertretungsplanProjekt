@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="row_a">#FAD3A6</color> <!-- normal -->
+    <color name="row_b">#FDECD9</color> <!-- normal 2 -->
+
+    <color name="row_header">#000000</color>    <!-- header -->
+
+    <color name="row_elimination">#ffff5900</color> <!-- elimination -->
+    <color name="row_substitution">#ff5f98ff</color> <!-- substitution -->
+    <color name="row_room_substitution">#ff46ff78</color> <!-- room substitution -->
+    <color name="row_class_change">#fffffc2a</color> <!-- class change -->
+
+    <color name="actionbar_background">#881A25</color>
+    <color name="actionbar_split_background">#AC7E6F</color>
+
+    <color name="dialog_background">#fff3f3f3</color>
+</resources>

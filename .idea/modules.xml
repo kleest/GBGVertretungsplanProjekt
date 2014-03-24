@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Error Reporting/Error Reporting.iml" filepath="$PROJECT_DIR$/Error Reporting/Error Reporting.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libraries/GBG Private/GBG Private.iml" filepath="$PROJECT_DIR$/libraries/GBG Private/GBG Private.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GBG Vertretungsplan/GBG Vertretungsplan.iml" filepath="$PROJECT_DIR$/GBG Vertretungsplan/GBG Vertretungsplan.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GBGVertretungsplanProjekt.iml" filepath="$PROJECT_DIR$/GBGVertretungsplanProjekt.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Network Communication/Network Communication.iml" filepath="$PROJECT_DIR$/Network Communication/Network Communication.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libraries/TableFixHeaders/TableFixHeaders.iml" filepath="$PROJECT_DIR$/libraries/TableFixHeaders/TableFixHeaders.iml" />
+    </modules>
+  </component>
+</project>
+

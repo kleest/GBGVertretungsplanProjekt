@@ -1,0 +1,64 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.9.+'
+        classpath 'com.alexvasilkov:android_sign:0.2'
+    }
+}
+apply plugin: 'android'
+apply plugin: 'android_sign'
+
+repositories {
+    mavenCentral()
+}
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion '19.0.3'
+    defaultConfig {
+        minSdkVersion 8
+        targetSdkVersion 19
+    }
+    productFlavors {
+        defaultFlavor {
+            proguardFile 'proguard-rules.txt'
+        }
+    }
+    signingConfigs {
+        testing {
+            storeFile file(signingStoreLocation)
+            keyAlias 'testing'
+        }
+        release {
+            storeFile file(signingStoreLocation)
+            keyAlias 'release'
+        }
+    }
+
+    buildTypes {
+        release {
+            runProguard false
+            proguardFile getDefaultProguardFile('proguard-android-optimize.txt')
+            debuggable false
+            signingConfig signingConfigs.release
+            zipAlign true
+        }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+    }
+}
+
+dependencies {
+    compile 'com.android.support:support-v4:+'
+    compile 'com.android.support:appcompat-v7:+'
+    compile 'org.jsoup:jsoup:1.7.3@jar'
+    compile project(':libraries:TableFixHeaders')
+    compile project(':Error Reporting')
+    compile project(':Network Communication')
+    compile project(':libraries:GBG Private')
+}

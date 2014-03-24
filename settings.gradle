@@ -1,0 +1,2 @@
+include ':GBG Vertretungsplan', ':libraries:GBG Private', ':Network Communication', ':Error Reporting'
+include ':libraries:TableFixHeaders'

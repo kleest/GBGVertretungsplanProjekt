@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dialog_background">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/legend_elimination"
+        android:id="@+id/legend_tv_elimination"
+        android:background="@color/row_elimination"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/legend_substitution"
+        android:id="@+id/legend_tv_substitution"
+        android:background="@color/row_substitution"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/legend_room_substitution"
+        android:id="@+id/legend_tv_room_substitution"
+        android:background="@color/row_room_substitution"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/legend_class_change"
+        android:id="@+id/legend_tv_class_change"
+        android:background="@color/row_class_change"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"/>
+</LinearLayout>

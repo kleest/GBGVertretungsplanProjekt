@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ####### MAIN ACTIVITY ####### -->
+    <string name="app_name">GBG Vertretungsplan</string>
+    <string name="title_sec_main">Substitution table</string>
+    <string name="title_sec_options">Settings</string>
+    <string name="title_sec_about">About</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="account_type">de.stkl.gbgvertretungsplan.Account</string>
+    <string name="content_authority">de.stkl.gbgvertretungsplan.provider</string>
+
+    <string name="error_only_one_account_allowed">Only one account is allowed!</string>
+
+
+    <string name="action_refresh">Refresh</string>
+    <string name="action_legend">Legend</string>
+
+    <string name="status_updated">Updated!</string>
+    <string name="status_error">Error has occurred!</string>
+    <string name="status_nodata">No entries!</string>
+
+    <string name="no_guarantee">No guarantee</string>
+
+    <!-- spinner -->
+    <string name="action_spinner_mainview_today">Today</string>
+    <string name="action_spinner_mainview_tomorrow">Tomorrow</string>
+
+    <!-- legend dialog -->
+    <string name="legend_elimination">Is off</string>
+    <string name="legend_substitution">Substitution</string>
+    <string name="legend_room_substitution">Room substitution</string>
+    <string name="legend_class_change">Class is changed</string>
+    <string name="legend_howto_detail">INFO: Tap onto an entry to see details</string>
+
+    <!-- account creation dialog -->
+    <string name="acccreation_notice">An account has to be created before %1$s can be used.</string>
+    <string name="acccreation_ok">Go on!</string>
+
+    <!-- popup (html) dialog -->
+    <string name="popup_ok">OK</string>
+
+    <!-- about fragment -->
+    <string-array name="about_item_titles">
+        <item>%1$s v%2$s</item>  <!-- %app_name% v%versionString% -->
+        <item>License &amp; Usage hints</item>
+        <item>Open source licenses</item>
+    </string-array>
+
+    <string-array name="about_item_summaries">
+        <item>Copyright © 2014 Steffen Klee</item>
+        <item />
+        <item>Used open source libraries and their licenses</item>
+    </string-array>
+
+    <!-- placeholder fragment -->
+    <string name="fragment_placeholder_nocontent">coming soon..</string>
+
+
+
+    <!-- ####### AUTHENTICATOR ACTIVITY ####### -->
+    <string name="title_activity_authenticator">Create an account</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_username">Username</string>
+    <string name="prompt_password">Password</string>
+
+    <string name="action_sign_in">Sign in</string>
+
+    <string name="login_progress_signing_in">Signing in&#8230;</string>
+
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+
+</resources>
