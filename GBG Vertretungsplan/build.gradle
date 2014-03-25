@@ -53,6 +53,8 @@ android {
     }
 }
 
+android.aaptOptions.useAaptPngCruncher = true
+
 dependencies {
     compile 'com.android.support:support-v4:+'
     compile 'com.android.support:appcompat-v7:+'
