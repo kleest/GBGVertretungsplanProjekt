@@ -255,6 +255,8 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
             try {
                 if (tryLogin(mUsername, mPassword))
                     return 1;
+                else
+                    return 0;
             } catch (CommunicationInterface.ParsingException e) {
                 ErrorReporter.reportError(e, getApplicationContext());
             } catch (CommunicationInterface.CommunicationException e) {
@@ -263,7 +265,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
                 return -1;
             }
 
-            return 0;
+            return -1;
         }
 
         @Override

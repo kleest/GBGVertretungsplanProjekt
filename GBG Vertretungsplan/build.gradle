@@ -12,6 +12,7 @@ apply plugin: 'android'
 apply plugin: 'android_sign'
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
@@ -58,7 +59,6 @@ android.aaptOptions.useAaptPngCruncher = true
 dependencies {
     compile 'com.android.support:support-v4:+'
     compile 'com.android.support:appcompat-v7:+'
-    compile 'org.jsoup:jsoup:1.7.3@jar'
     compile project(':libraries:TableFixHeaders')
     compile project(':Error Reporting')
     compile project(':Network Communication')

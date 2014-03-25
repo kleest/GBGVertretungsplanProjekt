@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jsoup-1.7.3-patched">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Network Communication/libs/jsoup-1.7.3-patched.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

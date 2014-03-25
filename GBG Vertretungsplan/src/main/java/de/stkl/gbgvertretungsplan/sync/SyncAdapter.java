@@ -37,6 +37,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
@@ -47,7 +48,10 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.CookieHandler;
+import java.net.CookieManager;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -80,7 +84,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         mAccountManager = AccountManager.get(context);
         mContext = context;
         if (mComInterface == null)
-            mComInterface = new GBGCommunication();
+            mComInterface = GBGCommunication.getInstance();
      }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -89,12 +93,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         mAccountManager = AccountManager.get(context);
         mContext = context;
         if (mComInterface == null)
-            mComInterface = new GBGCommunication();
+            mComInterface = GBGCommunication.getInstance();
     }
 
     public static CommunicationInterface getComInterface() {
         if (mComInterface == null)
-            mComInterface = new GBGCommunication();
+            mComInterface = GBGCommunication.getInstance();
         return mComInterface;
     }
 
@@ -116,7 +120,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         boolean error = false;
 
         try {
-            if (!tryLogin(httpClient, localContext, username, password))
+            if (!mComInterface.login(httpClient, localContext, username, password))
                 throw new LoginException();
 
             // 4. request and save pages (today + tomorrow)
@@ -138,6 +142,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             error = true;
         } catch (CommunicationInterface.LogoutException e) {
             ErrorReporter.reportError(e, mContext);
+            error = true;
+        // generic exceptions like NullPointerException should also indicate a failed Sync
+        } catch (Exception e) {
             error = true;
         } finally {
             if (error)
@@ -208,7 +215,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         return allRows;
     }
 
-    private void requestAndSaveDay(AndroidHttpClient httpClient, HttpContext localContext, int day) throws IOException, CommunicationInterface.ParsingException, CommunicationInterface.CommunicationException {
+    private void requestAndSaveDay(HttpClient httpClient, HttpContext localContext, int day) throws IOException, CommunicationInterface.ParsingException, CommunicationInterface.CommunicationException {
         Element body = mComInterface.requestDay(httpClient, localContext, day);
 
         Map<String,String> generalData = parseGeneralData(body);
@@ -281,8 +288,13 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         return result;
     }
 
+    // logs out after success
     public static boolean tryLogin(HttpClient httpClient, HttpContext localContext, String username, String password) throws IOException, CommunicationInterface.CommunicationException, CommunicationInterface.ParsingException {
-        return getComInterface().login(httpClient, localContext, username, password);
+        if (getComInterface().login(httpClient, localContext, username, password)) {
+            logout(httpClient, localContext);
+            return true;
+        } else
+            return false;
     }
 
     public static boolean logout(HttpClient httpClient, HttpContext localContext) throws IOException, CommunicationInterface.CommunicationException, CommunicationInterface.ParsingException {

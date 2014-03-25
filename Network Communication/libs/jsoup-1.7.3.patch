@@ -1,0 +1,14 @@
+# FIXES: Android 2.2 is missing String.isEmpty() in Java std library, resulting in an exception
+diff --git "a/jsoup/src/main/java/org/jsoup/helper/DataUtil.java" "b/jsoup/src/main/java/org/jsoup/helper/DataUtil.java"
+index 33457c3..98a3c80 100644
+--- "a/jsoup/src/main/java/org/jsoup/helper/DataUtil.java"
++++ "b/jsoup/src/main/java/org/jsoup/helper/DataUtil.java"
+@@ -170,7 +170,7 @@ public class DataUtil {
+         if (m.find()) {
+             String charset = m.group(1).trim();
+             charset = charset.replace("charset=", "");
+-            if (charset.isEmpty()) return null;
++            if (charset.equals("")) return null;
+             try {
+                 if (Charset.isSupported(charset)) return charset;
+                 charset = charset.toUpperCase(Locale.ENGLISH);

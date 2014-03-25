@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jsoup-1.7.4">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libraries/GBG Private/build/exploded-aar/GBGVertretungsplanProjekt/Network Communication/unspecified/libs/jsoup-1.7.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
