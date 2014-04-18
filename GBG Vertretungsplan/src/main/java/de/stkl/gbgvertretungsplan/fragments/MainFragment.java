@@ -290,6 +290,10 @@ public class MainFragment extends PlaceholderFragment {
         if (day == lastDay && CId == lastCId && !remoteUpdate)
             return;
 
+        TableFixHeaders tableFixHeaders = (TableFixHeaders) rootView.findViewById(R.id.table2);
+        if (tableFixHeaders != null)
+            tableFixHeaders.setVisibility(View.GONE);
+
         lastDay = day;
         lastCId = CId;
 
