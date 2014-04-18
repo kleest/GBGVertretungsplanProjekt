@@ -37,7 +37,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
@@ -599,28 +599,27 @@ public class MainFragment extends PlaceholderFragment {
         // set update time
         updateTime.setText(newDay.generalData.updateTime);
 
-        ViewGroup container = (ViewGroup)view.findViewById(R.id.container);
-        container.removeView(container.findViewById(R.id.dailyInfo));
+        ViewGroup container = (ViewGroup)view.findViewById(R.id.dailyInfos);
+        container.removeAllViews();
 
         // set daily infos
-        int i=0;
+        int i = 0;
+        int c = newDay.generalData.dailyInfos.size();
+        View v = null;
         for (SubstitutionTable.GeneralData.DailyInfo info : newDay.generalData.dailyInfos) {
-            View v = getActivity().getLayoutInflater().inflate(R.layout.table_dailyinfo, container, false);
+            v = getActivity().getLayoutInflater().inflate(R.layout.table_dailyinfo, container, false);
             TextView tvTitle = (TextView)v.findViewById(R.id.title);
             TextView tvDescription = (TextView)v.findViewById(R.id.description);
             tvTitle.setText(info.title);
-            tvDescription.setText(info.description);
 
-            if (i != 0) {
-                RelativeLayout.LayoutParams p2 = (RelativeLayout.LayoutParams) v.getLayoutParams();
-                RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT);
-                p2.addRule(RelativeLayout.BELOW, R.id.dailyInfo2);
-                v.setLayoutParams(p2);
+            if (info.description.equals("")) {
+                ((ViewGroup)v).removeViewInLayout(tvDescription);
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)tvTitle.getLayoutParams();
+                params.weight = 1f;
             } else
-                v.setId(R.id.dailyInfo2);
+                tvDescription.setText(info.description);
 
-            container.addView(v, 0);
+            container.addView(v);
             i++;
         }
     }

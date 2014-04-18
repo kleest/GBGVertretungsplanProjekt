@@ -249,9 +249,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         int i=0;
         for (Element info: dailyInfos) {
             Elements e = info.select("td");
-            if (e.size() != 2)
+            if (e.size() == 0)
                 continue;
-            String title = e.first().text(), description = e.get(1).text();
+            String title = e.first().text(), description = "";
+            if (e.size() > 1)
+                description = e.get(1).text();
             String keyTitle = "", keyDescription = "";
             switch(i) {
                 case 0: keyTitle = Sync.GENERAL_DATA_DAILYINFO_1_TITLE; keyDescription = Sync.GENERAL_DATA_DAILYINFO_1_DESCRIPTION;
