@@ -21,7 +21,6 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.OnNavigationListener;
@@ -53,7 +52,6 @@ import java.util.Map;
 
 import de.stkl.gbgvertretungsplan.BuildConfig;
 import de.stkl.gbgvertretungsplan.R;
-import de.stkl.gbgvertretungsplan.Util;
 import de.stkl.gbgvertretungsplan.activities.MainActivity;
 import de.stkl.gbgvertretungsplan.adapters.NavigationListAdapter;
 import de.stkl.gbgvertretungsplan.authenticator.Authenticator;
@@ -166,6 +164,12 @@ public class MainFragment extends PlaceholderFragment {
         }
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        updateTable(getView(), CId, mSpinnerPos, true);
+    }
+
     private ActionBar getActionBar() {
         return ((ActionBarActivity)getActivity()).getSupportActionBar();
     }
@@ -212,7 +216,6 @@ public class MainFragment extends PlaceholderFragment {
         getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         getActionBar().setListNavigationCallbacks(mSpinnerAdapter, mOnNavigationListener);
         getActionBar().setSelectedNavigationItem(mSpinnerPos);  // does not trigger callback!
-        updateTable(rootView, CId, mSpinnerPos, true);
 
         return rootView;
     }
@@ -331,20 +334,10 @@ public class MainFragment extends PlaceholderFragment {
                 // append info to view (only selected day!)
                 final View finRootView = rootView;
                 final SubstitutionTable.Table finToday = today, finTomorrow = tomorrow;
-                new Handler().postDelayed(new Runnable() {  // FIXME baaaaad hack (has to wait until activity has been rendered)
-                    @Override
-                    public void run() {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (day == 0)
-                                    fillTable(finRootView, finToday);
-                                else if (day == 1)
-                                    fillTable(finRootView, finTomorrow);
-                            }
-                        });
-                    }
-                }, 500);
+                if (day == 0)
+                    fillTable(finRootView, finToday);
+                else if (day == 1)
+                    fillTable(finRootView, finTomorrow);
             }
         }
     }
