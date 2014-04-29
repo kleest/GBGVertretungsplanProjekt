@@ -27,4 +27,7 @@ public final class Account {
 
     // codes
     public static final int ERROR_ONLY_ONE_ACCOUNT_ALLOWED = 1;
+
+    // properties
+    public static final String PROP_TYPE = "prop_type"; // defines the account type (0: student; 1: teacher)
 }

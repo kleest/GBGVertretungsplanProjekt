@@ -36,13 +36,15 @@ import de.stkl.gbgvertretungsplan.R;
 public class SubstitutionDetailDialog extends DialogFragment {
     private Map<String, String> detailInfo;
     private int activityWidth;
+    private int dataType;
 
     public SubstitutionDetailDialog() {
 
     }
 
-    public SubstitutionDetailDialog(Map<String, String> detailInfo) { //String date, String className, String lesson, String oSubject, String oRoom, String nSubject, String nRoom, String substitutionInfo) {
+    public SubstitutionDetailDialog(Map<String, String> detailInfo, int dataType) { // dataType: 0: student; 1: teacher
         this.detailInfo = detailInfo;
+        this.dataType = dataType;
     }
 
     public void setDetailInfo(Map<String, String> detailInfo) {
@@ -52,22 +54,36 @@ public class SubstitutionDetailDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Map<String, String> detailInfo = null;
-        if (savedInstanceState != null)
-            detailInfo = (HashMap<String, String>)savedInstanceState.getSerializable("detailInfo"); //, detailInfo);
+        int dataType = -1;
+        if (savedInstanceState != null) {
+            detailInfo = (HashMap<String, String>) savedInstanceState.getSerializable("detailInfo");
+            dataType = savedInstanceState.getInt("dataType", -1);
+        }
         if (detailInfo != null)
             this.detailInfo = detailInfo;
+        if (dataType != -1)
+            this.dataType = dataType;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         View view = inflater.inflate(R.layout.dialog_detail, null);
-        ((TextView)view.findViewById(R.id.date)).setText(this.detailInfo.get("date"));
-        ((TextView)view.findViewById(R.id.className)).setText(this.detailInfo.get("className"));
-        ((TextView)view.findViewById(R.id.type)).setText(this.detailInfo.get("type"));
-        ((TextView)view.findViewById(R.id.lesson)).setText(this.detailInfo.get("lesson"));
-        ((TextView)view.findViewById(R.id.oldRoomSubject)).setText(this.detailInfo.get("oldRoomSubject"));
-        ((TextView)view.findViewById(R.id.newRoomSubject)).setText(this.detailInfo.get("newRoomSubject"));
+        if (this.dataType == 0) {
+            ((TextView) view.findViewById(R.id.className)).setText(this.detailInfo.get("className"));
+            ((TextView) view.findViewById(R.id.type)).setText(this.detailInfo.get("type"));
+            ((TextView) view.findViewById(R.id.lesson)).setText(this.detailInfo.get("lesson"));
+            ((TextView) view.findViewById(R.id.oldRoomSubject)).setText(this.detailInfo.get("oldRoomSubject"));
+            ((TextView) view.findViewById(R.id.newRoomSubject)).setText(this.detailInfo.get("newRoomSubject"));
+        } else if (this.dataType == 1) {
+            ((TextView) view.findViewById(R.id.className)).setText(this.detailInfo.get("teacher"));
+            ((TextView) view.findViewById(R.id.type)).setText(this.detailInfo.get("type"));
+            ((TextView) view.findViewById(R.id.lesson)).setText(this.detailInfo.get("lesson"));
+            ((TextView) view.findViewById(R.id.oldRoomSubject)).setText(this.detailInfo.get("oldTeacherSubjectRoom"));
+            ((TextView) view.findViewById(R.id.newRoomSubject)).setText(this.detailInfo.get("newTeacherSubjectRoom"));
+
+        }
+        ((TextView) view.findViewById(R.id.date)).setText(this.detailInfo.get("date"));
         if (this.detailInfo.get("substitutionInfo").trim().equals(""))
             view.findViewById(R.id.substitutionInfo).setVisibility(View.GONE);
         else {
@@ -84,6 +100,7 @@ public class SubstitutionDetailDialog extends DialogFragment {
         super.onSaveInstanceState(outState);
         outState.putSerializable("detailInfo", (HashMap<String, String>)detailInfo);
         outState.putInt("lastActivityWidth", activityWidth);
+        outState.putInt("dataType", dataType);
     }
 
     @Override

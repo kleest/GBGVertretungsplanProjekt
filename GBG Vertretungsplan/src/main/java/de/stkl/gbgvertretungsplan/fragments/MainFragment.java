@@ -56,6 +56,8 @@ import de.stkl.gbgvertretungsplan.activities.MainActivity;
 import de.stkl.gbgvertretungsplan.adapters.NavigationListAdapter;
 import de.stkl.gbgvertretungsplan.authenticator.Authenticator;
 import de.stkl.gbgvertretungsplan.content.SubstitutionTable;
+import de.stkl.gbgvertretungsplan.content.SubstitutionTableStudent;
+import de.stkl.gbgvertretungsplan.content.SubstitutionTableTeacher;
 import de.stkl.gbgvertretungsplan.errorreporting.ErrorReporter;
 import de.stkl.gbgvertretungsplan.sync.Storage;
 import de.stkl.gbgvertretungsplan.values.Account;
@@ -430,14 +432,27 @@ public class MainFragment extends PlaceholderFragment {
                     if (dateArr.length > 0)
                         date = dateArr[0];
                     data.put("date", date);
-                    data.put("className", table.getEntry(finalRow).className);
-                    data.put("lesson", "Stunde(n): "+table.getEntry(finalRow).lesson);
-                    data.put("oldRoomSubject", table.getEntry(finalRow).oldSubject + " in " + table.getEntry(finalRow).oldRoom);
-                    data.put("newRoomSubject", table.getEntry(finalRow).newSubject + " in " + table.getEntry(finalRow).newRoom);
-                    data.put("type", table.getEntry(finalRow).type);
-                    data.put("substitutionInfo", table.getEntry(finalRow).substitutionInfo);
 
-                    DialogFragment newFragment = new SubstitutionDetailDialog(data);
+                    if (table.generalData.dataType == 0) {
+                        SubstitutionTableStudent.Entry entry = (SubstitutionTableStudent.Entry) table.getEntry(finalRow);
+                        data.put("className", entry.className);
+                        data.put("lesson", "Stunde(n): " + entry.lesson);
+                        data.put("oldRoomSubject", entry.oldSubject + " in " + entry.oldRoom);
+                        data.put("newRoomSubject", entry.newSubject + " in " + entry.newRoom);
+                        data.put("type", entry.type);
+                        data.put("substitutionInfo", entry.substitutionInfo);
+                    } else if (table.generalData.dataType == 1) {
+                        SubstitutionTableTeacher.Entry entry = (SubstitutionTableTeacher.Entry) table.getEntry(finalRow);
+                        data.put("teacher", entry.teacher + " -> " + entry.className);
+                        data.put("type", entry.type);
+                        data.put("lesson", "Stunde(n): "+entry.lesson);
+                        data.put("oldTeacherSubjectRoom", entry.oldSubject + "(" + entry.oldTeacher + ")" + " in " + entry.oldRoom);
+                        data.put("newTeacherSubjectRoom", entry.newSubject + " in " + entry.newRoom);
+                        data.put("type", entry.type);
+                        data.put("substitutionInfo", entry.substitutionInfo);
+                    }
+
+                    DialogFragment newFragment = new SubstitutionDetailDialog(data, table.generalData.dataType);
                     newFragment.show(getActivity().getSupportFragmentManager(), "subst_detail");
                 }
             });
@@ -528,8 +543,14 @@ public class MainFragment extends PlaceholderFragment {
         for (int iRow = 0; iRow<day.getEntryCount()+1; iRow++) {
             if (iRow > 0)
                 curContent = day.getEntry(iRow-1).get(col);
-            else
-                curContent = SubstitutionTable.Header.get(col);
+            else {
+                if (day.generalData.dataType == 0)
+                    curContent = SubstitutionTableStudent.Header.get(col);
+                else if (day.generalData.dataType == 1)
+                    curContent = SubstitutionTableTeacher.Header.get(col);
+                else
+                    curContent = "";
+            }
             int cWidth;
             if (iRow == 0)
                 cWidth = calculateTableCellWidth(curContent, tc.getView(-1, col, null, parent));
@@ -564,7 +585,7 @@ public class MainFragment extends PlaceholderFragment {
 
         // filter, if a particular class is selected
         if (o != null)
-            newDay = Storage.filter(day, Storage.FilterType.FILTER_CLASS, o.text);
+            newDay = Storage.filter(day, Storage.FilterType.FILTER_CLASS_TEACHER, o.text);
         else
             newDay = Storage.filter(day, Storage.FilterType.FILTER_NONE, null);
 

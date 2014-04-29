@@ -35,7 +35,7 @@ public interface CommunicationInterface {
     public static final class LogoutException extends Exception {
     }
 
-    public boolean login(HttpClient httpClient, HttpContext localContext, String username, String password) throws IOException, CommunicationException, ParsingException;
-    public boolean logout(HttpClient httpClient, HttpContext localContext) throws IOException, CommunicationException, ParsingException;
-    public Element requestDay(HttpClient httpClient, HttpContext localContext, int index) throws IOException, CommunicationException, ParsingException;
+    public boolean login(HttpClient httpClient, HttpContext localContext, String username, String password, int dataType) throws IOException, CommunicationException, ParsingException;
+    public boolean logout(HttpClient httpClient, HttpContext localContext, int dataType) throws IOException, CommunicationException, ParsingException;
+    public Element requestDay(HttpClient httpClient, HttpContext localContext, int index, int dataType) throws IOException, CommunicationException, ParsingException;
 }

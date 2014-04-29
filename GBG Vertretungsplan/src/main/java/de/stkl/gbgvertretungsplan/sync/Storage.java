@@ -18,7 +18,6 @@ package de.stkl.gbgvertretungsplan.sync;
 import android.content.Context;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -28,8 +27,9 @@ import java.util.List;
 import java.util.Map;
 
 import de.stkl.gbgvertretungsplan.R;
-import de.stkl.gbgvertretungsplan.Util;
 import de.stkl.gbgvertretungsplan.content.SubstitutionTable;
+import de.stkl.gbgvertretungsplan.content.SubstitutionTableStudent;
+import de.stkl.gbgvertretungsplan.content.SubstitutionTableTeacher;
 import de.stkl.gbgvertretungsplan.errorreporting.ErrorReporter;
 import de.stkl.gbgvertretungsplan.values.Sync;
 
@@ -68,11 +68,21 @@ public class Storage {
         ois.close();
         is.close();
 
-        SubstitutionTable.Table table = new SubstitutionTable.Table();
+        SubstitutionTable.Table table = null;
+        int dataType = Integer.parseInt(generalData.get(Sync.GENERAL_DATA_DATATYPE) == null ? "0" : generalData.get(Sync.GENERAL_DATA_DATATYPE));
+
+        // student
+        if (dataType == 0)
+            table = new SubstitutionTableStudent.Table();
+        else if (dataType == 1)
+            table = new SubstitutionTableTeacher.Table();
+        else
+            throw new IOException();
 
         // parse general data
         table.generalData.date = generalData.get(Sync.GENERAL_DATA_DATE);
         table.generalData.updateTime = generalData.get(Sync.GENERAL_DATA_UPDATETIME);
+        table.generalData.dataType = dataType;
 
         // general data: daily info
         for (int i=0; i<Sync.GENERAL_DATA_DAILYINFO_MAX; i++) {
@@ -90,49 +100,100 @@ public class Storage {
             if (!keyTitle.equals("")) {
                 String title = generalData.get(keyTitle);
                 String description = generalData.get(keyDescription);
-                if (title != null && description != null)
-                    table.generalData.dailyInfos.add(new SubstitutionTable.GeneralData.DailyInfo(title, description));
+                if (title != null && description != null) {
+                    if (dataType == 0)
+                        table.generalData.dailyInfos.add(new SubstitutionTableStudent.GeneralData.DailyInfo(title, description));
+                    else if (dataType == 1)
+                        table.generalData.dailyInfos.add(new SubstitutionTableTeacher.GeneralData.DailyInfo(title, description));
+                }
             }
         }
 
 
-        for (List<String> row: allRows) {
-            SubstitutionTable.Entry newEntry = new SubstitutionTable.Entry(table);
+        if (dataType == 0) {
+            for (List<String> row : allRows) {
+                SubstitutionTable.Entry newEntry = new SubstitutionTableStudent.Entry(table);
 
-            int i=0;
-            for (String categ: categories) {
-                String item = row.get(i);
-                switch (SubstitutionTable.lookupKey(categ)) {
-                    case CLASSNAME:
-                        newEntry.className = item;
-                        break;
-                    case LESSON:
-                        newEntry.lesson = item;
-                        break;
-                    case NEW_ROOM:
-                        newEntry.newRoom = item;
-                        break;
-                    case NEW_SUBJECT:
-                        newEntry.newSubject = item;
-                        break;
-                    case OLD_ROOM:
-                        newEntry.oldRoom = item;
-                        break;
-                    case OLD_SUBJECT:
-                        newEntry.oldSubject = item;
-                        break;
-                    case TYPE:
-                        newEntry.type = item;
-                        break;
-                    case SUBSTITUTIONINFO:
-                        newEntry.substitutionInfo = item.replaceAll("\u00a0","");
-                        break;
-                    default:
-                        break;
+                int i = 0;
+                for (String categ : categories) {
+                    String item = row.get(i);
+                    switch (SubstitutionTableStudent.Keys.lookupKey(categ)) {
+                        case CLASSNAME:
+                            ((SubstitutionTableStudent.Entry) newEntry).className = item;
+                            break;
+                        case LESSON:
+                            ((SubstitutionTableStudent.Entry) newEntry).lesson = item;
+                            break;
+                        case NEW_ROOM:
+                            ((SubstitutionTableStudent.Entry) newEntry).newRoom = item;
+                            break;
+                        case NEW_SUBJECT:
+                            ((SubstitutionTableStudent.Entry) newEntry).newSubject = item;
+                            break;
+                        case OLD_ROOM:
+                            ((SubstitutionTableStudent.Entry) newEntry).oldRoom = item;
+                            break;
+                        case OLD_SUBJECT:
+                            ((SubstitutionTableStudent.Entry) newEntry).oldSubject = item;
+                            break;
+                        case TYPE:
+                            ((SubstitutionTableStudent.Entry) newEntry).type = item;
+                            break;
+                        case SUBSTITUTIONINFO:
+                            ((SubstitutionTableStudent.Entry) newEntry).substitutionInfo = item.replaceAll("\u00a0", "");
+                            break;
+                        default:
+                            break;
+                    }
+                    i++;
                 }
-                i++;
+                table.addEntry(newEntry);
             }
-            table.addEntry(newEntry);
+        } else if (dataType == 1) {
+            for (List<String> row : allRows) {
+                SubstitutionTable.Entry newEntry = new SubstitutionTableTeacher.Entry(table);
+
+                int i = 0;
+                for (String categ : categories) {
+                    String item = row.get(i);
+                    switch (SubstitutionTableTeacher.Keys.lookupKey(categ)) {
+                        case TEACHER:
+                            ((SubstitutionTableTeacher.Entry) newEntry).teacher = item;
+                            break;
+                        case TYPE:
+                            ((SubstitutionTableTeacher.Entry) newEntry).type = item;
+                            break;
+                        case LESSON:
+                            ((SubstitutionTableTeacher.Entry) newEntry).lesson = item;
+                            break;
+                        case OLD_TEACHER:
+                            ((SubstitutionTableTeacher.Entry) newEntry).oldTeacher = item;
+                            break;
+                        case CLASSNAME:
+                            ((SubstitutionTableTeacher.Entry) newEntry).className = item;
+                            break;
+                        case OLD_ROOM:
+                            ((SubstitutionTableTeacher.Entry) newEntry).oldRoom = item;
+                            break;
+                        case NEW_SUBJECT:
+                            ((SubstitutionTableTeacher.Entry) newEntry).newSubject = item;
+                            break;
+                        case NEW_ROOM:
+                            ((SubstitutionTableTeacher.Entry) newEntry).newRoom = item;
+                            break;
+                        case OLD_SUBJECT:
+                            ((SubstitutionTableTeacher.Entry) newEntry).oldSubject = item;
+                            break;
+                        case SUBSTITUTIONINFO:
+                            ((SubstitutionTableTeacher.Entry) newEntry).substitutionInfo = item.replaceAll("\u00a0", "");
+                            break;
+                        default:
+                            break;
+                    }
+                    i++;
+                }
+                table.addEntry(newEntry);
+            }
         }
 
         return table;
@@ -172,7 +233,7 @@ public class Storage {
 
     public static enum FilterType {
         FILTER_NONE,
-        FILTER_CLASS
+        FILTER_CLASS_TEACHER
     }
 
     public static List<SubstitutionTable.Entry> cloneList(List<SubstitutionTable.Entry> list) {
@@ -186,21 +247,31 @@ public class Storage {
 
         switch (filterType) {
             //  if class filter is applied, first category (class information) is removed
-            case FILTER_CLASS:
-                input.generalData.flags.add(SubstitutionTable.GeneralData.Flags.HIDE_CLASSNAME);
+            case FILTER_CLASS_TEACHER:
+                input.generalData.flags.add(SubstitutionTable.GeneralData.Flags.HIDE_CLASSNAME_TEACHER);
                 break;
             default:
                 break;
         }
         // always remove "substitution type" category because it is indicated by colors
-        input.generalData.flags.add(SubstitutionTable.GeneralData.Flags.HIDE_TYPE);
+        input.generalData.flags.add(SubstitutionTableStudent.GeneralData.Flags.HIDE_TYPE);
 
         // translate "substitution type" into a color
         for (SubstitutionTable.Entry entry: input.getEntries()) {
-            if (filterType == FilterType.FILTER_CLASS && !entry.className.equals(filterString))
-                entry.visible = false;
+            if (filterType == FilterType.FILTER_CLASS_TEACHER) {
+                if (entry instanceof SubstitutionTableStudent.Entry && !((SubstitutionTableStudent.Entry) entry).className.equals(filterString))
+                    entry.visible = false;
+                else if (entry instanceof SubstitutionTableTeacher.Entry && !((SubstitutionTableTeacher.Entry) entry).teacher.equals(filterString))
+                    entry.visible = false;
+            }
             int backgroundRID = R.drawable.row_background_a;
-            String type = entry.type;
+            String type = "";
+
+            if (entry instanceof SubstitutionTableStudent.Entry)
+                type = ((SubstitutionTableStudent.Entry) entry).type;
+            else
+                type = ((SubstitutionTableTeacher.Entry) entry).type;
+
             if (type.equals("Entfall"))
                 backgroundRID = R.drawable.row_background_elimination;
             else if (type.equals("Unterricht geändert") || type.equals("Verlegung") || type.equals("Tausch"))

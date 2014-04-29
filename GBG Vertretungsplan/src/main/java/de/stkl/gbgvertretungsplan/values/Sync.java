@@ -34,5 +34,7 @@ public final class Sync {
     public static final String GENERAL_DATA_DAILYINFO_2_DESCRIPTION = "dailyInfo2Description";
     public static final String GENERAL_DATA_DAILYINFO_3_TITLE = "dailyInfo3Title";
     public static final String GENERAL_DATA_DAILYINFO_3_DESCRIPTION = "dailyInfo3Description";
+    public static final String GENERAL_DATA_DATATYPE = "dataType";  // defines the data type (student: 0 OR teacher: 1)
+
     public static final String ACTION_SYNC_FINISHED = "gbgvertretungsplan.intent.action.SYNC_FINISHED";
 }

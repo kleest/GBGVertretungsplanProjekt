@@ -140,7 +140,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        mUsername = mUsernameView.getText().toString();
+        mUsername = mUsernameView.getText().toString().trim();
         mPassword = mPasswordView.getText().toString();
 
         boolean cancel = false;
@@ -233,6 +233,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
         final Account acc = new Account(mUsername, getString(R.string.account_type));
         // create user data that is associated with the account
         Bundle userData = new Bundle();
+        userData.putString(de.stkl.gbgvertretungsplan.values.Account.PROP_TYPE, mUsername.equals("Lehrer") ? "1" : "0"); // FIXME hacky detection of teacher mode
         // add the account
         mAccountManager.addAccountExplicitly(acc, mPassword, userData);
 

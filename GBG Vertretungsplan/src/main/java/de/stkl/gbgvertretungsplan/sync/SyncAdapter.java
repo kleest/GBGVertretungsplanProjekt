@@ -44,6 +44,7 @@ import org.apache.http.protocol.HttpContext;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
@@ -120,12 +121,15 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         boolean error = false;
 
         try {
-            if (!mComInterface.login(httpClient, localContext, username, password))
+            String dataTypeS = mAccountManager.getUserData(account, de.stkl.gbgvertretungsplan.values.Account.PROP_TYPE);
+            int dataType = dataTypeS == null ? 0: Integer.valueOf(dataTypeS);
+
+            if (!mComInterface.login(httpClient, localContext, username, password, dataType))
                 throw new LoginException();
 
             // 4. request and save pages (today + tomorrow)
-            requestAndSaveDay(httpClient, localContext, 0); // today
-            requestAndSaveDay(httpClient, localContext, 1);  // and tomorrow
+            requestAndSaveDay(httpClient, localContext, 0, dataType); // today
+            requestAndSaveDay(httpClient, localContext, 1, dataType);  // and tomorrow
 
             if (!logout(httpClient, localContext))
                 throw new CommunicationInterface.LogoutException();
@@ -215,10 +219,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         return allRows;
     }
 
-    private void requestAndSaveDay(HttpClient httpClient, HttpContext localContext, int day) throws IOException, CommunicationInterface.ParsingException, CommunicationInterface.CommunicationException {
-        Element body = mComInterface.requestDay(httpClient, localContext, day);
+    private void requestAndSaveDay(HttpClient httpClient, HttpContext localContext, int day, int dataType) throws IOException, CommunicationInterface.ParsingException, CommunicationInterface.CommunicationException {
+        Element body = mComInterface.requestDay(httpClient, localContext, day, dataType);
 
-        Map<String,String> generalData = parseGeneralData(body);
+        Map<String,String> generalData = parseGeneralData(body, dataType);
         List<String> categories = parseCategories(body);
         List<List<String>> rows = parseRows(body);
 
@@ -229,7 +233,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         Storage.saveToDisk(mContext, generalData, categories, rows, day);
     }
 
-    private Map<String,String> parseGeneralData(Element root) {
+    private Map<String,String> parseGeneralData(Element root, int dataType) {
         Map<String,String> generalData = new HashMap<String, String>();
         // last update time and day
         Element updateTime = root.select("table.mon_head td:eq(2) p").first();
@@ -272,6 +276,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             i++;
         }
 
+        generalData.put(Sync.GENERAL_DATA_DATATYPE, String.valueOf(dataType));
+
         return generalData;
     }
 
@@ -292,7 +298,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     // logs out after success
     public static boolean tryLogin(HttpClient httpClient, HttpContext localContext, String username, String password) throws IOException, CommunicationInterface.CommunicationException, CommunicationInterface.ParsingException {
-        if (getComInterface().login(httpClient, localContext, username, password)) {
+        if (getComInterface().login(httpClient, localContext, username, password, -1)) {
             logout(httpClient, localContext);
             return true;
         } else
@@ -300,6 +306,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     public static boolean logout(HttpClient httpClient, HttpContext localContext) throws IOException, CommunicationInterface.CommunicationException, CommunicationInterface.ParsingException {
-        return getComInterface().logout(httpClient, localContext);
+        return getComInterface().logout(httpClient, localContext, -1);
     }
 }
