@@ -255,9 +255,19 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             Elements e = info.select("td");
             if (e.size() == 0)
                 continue;
-            String title = e.first().text(), description = "";
-            if (e.size() > 1)
-                description = e.get(1).text();
+
+            String title = "", description = "";
+            for (TextNode node: e.first().textNodes())
+                title += node.text()+'\n';
+            title = title.trim();
+
+            // description only if available
+            if (e.size() > 1) {
+                for (TextNode node: e.get(1).textNodes())
+                    description += node.text()+'\n';
+                description = title.trim();
+            }
+
             String keyTitle = "", keyDescription = "";
             switch(i) {
                 case 0: keyTitle = Sync.GENERAL_DATA_DAILYINFO_1_TITLE; keyDescription = Sync.GENERAL_DATA_DAILYINFO_1_DESCRIPTION;
