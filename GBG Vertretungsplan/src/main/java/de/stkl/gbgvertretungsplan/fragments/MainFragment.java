@@ -18,6 +18,7 @@ package de.stkl.gbgvertretungsplan.fragments;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -62,6 +63,7 @@ import de.stkl.gbgvertretungsplan.errorreporting.ErrorReporter;
 import de.stkl.gbgvertretungsplan.sync.Storage;
 import de.stkl.gbgvertretungsplan.values.Account;
 import de.stkl.gbgvertretungsplan.values.Sync;
+import de.stkl.gbgvertretungsplan.views.LayoutMeasureView;
 
 /**
  * Created by Steffen Klee on 22.01.14.
@@ -590,8 +592,14 @@ public class MainFragment extends PlaceholderFragment {
             newDay = Storage.filter(day, Storage.FilterType.FILTER_NONE, null);
 
         // display substitution info only if display width is greater than treshold
-        int width = getActivity().getWindow().findViewById(Window.ID_ANDROID_CONTENT).getRight();
+        int width;
         int threshold = getResources().getDimensionPixelSize(R.dimen.table_substitutioninfo_threshold);
+        // LayoutMeasureView.w is ALWAYS the width in portrait mode!
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+            width = LayoutMeasureView.screenH;
+        else
+            width = LayoutMeasureView.screenW;
+
         if (width < threshold)
             newDay.generalData.flags.add(SubstitutionTable.GeneralData.Flags.HIDE_SUBSTITUTIONINFO);
 
