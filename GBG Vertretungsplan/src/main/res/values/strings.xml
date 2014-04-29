@@ -61,6 +61,7 @@
 
     <!-- ####### AUTHENTICATOR ACTIVITY ####### -->
     <string name="title_activity_authenticator">Create an account</string>
+    <string name="info_account_information">The account information matches the information used for the online substitution table on the GBG website.</string>
 
     <!-- Strings related to login -->
     <string name="prompt_username">Username</string>

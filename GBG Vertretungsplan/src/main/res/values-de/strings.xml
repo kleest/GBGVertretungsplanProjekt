@@ -61,6 +61,7 @@
 
     <!-- ####### AUTHENTICATOR ACTIVITY ####### -->
     <string name="title_activity_authenticator">Konto erstellen</string>
+    <string name="info_account_information">Die Zugangsdaten entsprechen denen des Online-Vertetungsplans auf der GBG-Webseite.</string>
 
     <!-- Strings related to login -->
     <string name="prompt_username">Benutzername</string>

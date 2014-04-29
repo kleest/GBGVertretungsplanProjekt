@@ -33,6 +33,13 @@
         <LinearLayout style="@style/LoginFormContainer"
             android:orientation="vertical">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/info_account_information"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:paddingBottom="10sp" />
+
             <EditText
                 android:id="@+id/username"
                 android:singleLine="true"
